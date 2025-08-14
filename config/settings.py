@@ -143,7 +143,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': os.getenv("NAME"),
-        'USER': 'leo312z5_db',
+        'USER': os.getenv("USER"),
         'PASSWORD': os.getenv("PASSWORD"),
         'HOST': 'localhost',
         'PORT': os.getenv("PORT"),
