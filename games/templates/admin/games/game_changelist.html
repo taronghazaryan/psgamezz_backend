@@ -1,0 +1,16 @@
+{% extends "admin/change_list.html" %}
+
+{% block object-tools %}
+
+    <button type="button" onclick="openImportWindow()" class="btn btn-success float-right">Импортировать Excel</button>
+    <script>
+    function openImportWindow() {
+        window.open(
+            "{% url 'admin:game-import-excel' %}",
+            "importWindow",
+            "width=600,height=400,top=100,left=100,resizable=yes,scrollbars=yes"
+        );
+    }
+    </script>
+  {{ block.super }}
+{% endblock %}

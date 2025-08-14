@@ -1,0 +1,21 @@
+{% extends "admin/base_site.html" %}
+
+{% block title %}Импорт игр из Excel{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data" style="margin-top: 20px;">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="excel_file"><strong>Выберите Excel-файл:</strong></label>
+                <input type="file" name="excel_file" accept=".xlsx, .xls" class="form-control-file" required>
+            </div>
+            <div style="margin-top: 20px;">
+                <button type="submit" class="btn btn-primary">Импортировать</button>
+                <a href="{% url 'admin:games_game_changelist' %}" class="btn btn-link">← Назад к списку игр</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
