@@ -32,6 +32,10 @@ DEBUG = False
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
 
 CSRF_TRUSTED_ORIGINS = ["https://psgamezz.ru", "https://www.psgamezz.ru"]
+
+# За nginx: доверяем заголовку X-Forwarded-Proto, чтобы Django видел HTTPS
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
 # Application definition
 
 INSTALLED_APPS = [
