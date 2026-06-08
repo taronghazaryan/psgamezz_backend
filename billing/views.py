@@ -1,5 +1,6 @@
 import hashlib
 import time
+import uuid
 import requests
 
 from urllib.parse import urlencode
@@ -456,12 +457,17 @@ class PaymentStatus(APIView):
         pid = request.query_params.get("pid")
         logger.info(f"Получено PID {pid}")
 
-        payment = PaymentService.get_payment_by_pk(pid)
-        logger.info(f"Request method: {payment.invoice_id}")
+        # пустой/некорректный pid не валим в 500 — это невалидный UUID
+        try:
+            uuid.UUID(str(pid))
+        except (ValueError, TypeError, AttributeError):
+            return Response({"status": "NOT_FOUND"}, status=404)
 
+        payment = PaymentService.get_payment_by_pk(pid)
         if not payment:
             return Response({"status": "NOT_FOUND"}, status=404)
 
+        logger.info(f"invoice_id: {payment.invoice_id}")
         return Response({
             "status": payment.status,
             "inv_id": payment.invoice_id
