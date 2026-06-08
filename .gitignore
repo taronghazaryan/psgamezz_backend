@@ -1,0 +1,30 @@
+# --- секреты: НИКОГДА не коммитить ---
+.env
+.env.*
+!.env.example
+credentials.json
+*.save
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+venv/
+env/
+
+# --- Django ---
+db.sqlite3
+db.sqlite3-journal
+/media/
+/static/
+/staticfiles/
+celerybeat-schedule
+celerybeat-schedule.*
+*.log
+
+# --- OS / IDE ---
+.DS_Store
+.idea/
+.vscode/

@@ -1,0 +1,34 @@
+{% extends "admin/change_list.html" %}
+
+{% block object-tools %}
+
+    <button type="button" onclick="openImportWindow()" class="btn btn-success float-right m-1">Импортировать Excel</button>
+    <br>
+    <button type="button" onclick="updatePrices()" class="btn btn-success float-right">Обновить цены</button>
+    <script>
+    function openImportWindow() {
+        window.open(
+            "{% url 'admin:game-import-excel' %}",
+            "importWindow",
+            "width=600,height=400,top=100,left=100,resizable=yes,scrollbars=yes"
+        );
+    }
+    function updatePrices() {
+        fetch("/update-prices/", {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+        })
+        .catch(error => {
+            alert("Ошибка при запуске обновления цен");
+            console.error(error);
+        });
+    }
+    </script>
+  {{ block.super }}
+{% endblock %}

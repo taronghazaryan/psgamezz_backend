@@ -1,0 +1,68 @@
+services:
+  redis:
+    image: redis:latest
+    container_name: redis
+    # Порт привязан только к localhost — Redis НЕ доступен из интернета.
+    # (раньше было "6379:6379" = 0.0.0.0 — через это и поставили майнер)
+    ports:
+      - "127.0.0.1:6379:6379"
+
+  db:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    # Порт только на localhost — Postgres НЕ доступен из интернета.
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: .
+    container_name: psgamezz_backend
+    command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
+
+    env_file:
+      - .env
+
+    volumes:
+      - .:/app
+      - ./media:/app/media
+      - ./credentials.json:/app/credentials.json
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+      - db
+
+  celery_worker:
+    build: .
+    container_name: celery_worker
+    command: celery -A config worker -l info
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+      - backend
+      - db
+
+  celery_beat:
+    build: .
+    container_name: celery_beat
+    command: celery -A config beat -l info
+    volumes:
+      - .:/app
+      - ./media:/app/media
+    depends_on:
+      - redis
+      - backend
+      - db
+
+volumes:
+  postgres_data:
