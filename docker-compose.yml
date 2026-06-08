@@ -35,8 +35,9 @@ services:
       - .:/app
       - ./media:/app/media
       - ./credentials.json:/app/credentials.json
+    # Только localhost — наружу бэкенд пускаем через nginx (Docker иначе обходит ufw)
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
     depends_on:
       - redis
       - db
