@@ -55,7 +55,7 @@ def import_excel_task(file_bytes):
         slugify_unicode = None
         logger.warning(
             "python-slugify не установлен — пути к картинкам не будут восстановлены, "
-            "ставится default-image.jpg. Добавь python-slugify в requirements."
+            "ставится default-image.png. Добавь python-slugify в requirements."
         )
 
     wb = openpyxl.load_workbook(io.BytesIO(file_bytes))
@@ -142,9 +142,9 @@ def import_excel_task(file_bytes):
                 if default_storage.exists(candidate):
                     game.main_image_url.name = candidate
                 else:
-                    game.main_image_url.name = "default-image.jpg"
+                    game.main_image_url.name = "default-image.png"
             else:
-                game.main_image_url.name = "default-image.jpg"
+                game.main_image_url.name = "default-image.png"
             game.save()
 
             if not created:
@@ -396,7 +396,7 @@ def update_prices_bulk():
                         },
                     )
 
-                    game.main_image_url.name = "default-image.jpg"
+                    game.main_image_url.name = "default-image.png"
                     game.save()
 
                     # запоминаем новую игру в кэшах, чтобы повтор артикула не дублировал
