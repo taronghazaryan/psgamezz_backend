@@ -33,8 +33,6 @@ class AuthorizedMiddleware:
                 '/swagger.json'
             ]
         }
-        print("ENV TOKEN:", os.getenv("TOKEN"))
-        print("AUTH HEADER:", request.headers.get("Authorization"))
         if any(request.path.startswith(prefix) for prefix in PATH_PREFIXES["excluded_paths"]):
             return self.get_response(request)
 
